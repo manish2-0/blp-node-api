@@ -6,7 +6,9 @@ const corsOptions = require('./config/corsOptions');
 // const TokenMiddleware = require("./middleware/token.js");
 // require('dotenv').config()
 const cors = require('cors');
-const adminRouter = require("./routes/adminRoutes")
+const adminRouter = require("./routes/adminRoutes");
+const clientRouter = require("./routes/clientRoutes");
+const refreshRouter = require("./routes/refreshRoutes");
 
 app.use(credentials);
 
@@ -28,7 +30,9 @@ app.use(cookieParser());
 
 // // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true })); 
-app.use("/admin", adminRouter)
+app.use("/admin", adminRouter);
+app.use("/client", clientRouter)
+app.use("/refresh", refreshRouter)
 
 
 // require('./routes/unauth.js')(app);

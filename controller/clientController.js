@@ -1,5 +1,4 @@
 const client = require("../model/client");
-const date = require('date-and-time');
 
 exports.register = async (req, res) => {
     const clientDetails = {};

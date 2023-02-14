@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
     const {admin_id} = req.body;
     const {password} = req.body;
     let flag = true;
-    if(!admin_id || !password){
+    if(!admin_id && !password){
         flag = false;
         error = "Please Enter Credentials";
     }
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
                 const saveToken = await refresh.saveRefresh(admin_id, refreshToken, createdAt, expiryAt);
                 const userAgent = req.headers['user-agent'];
                 const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-                res.cookie('refreshJwt', refreshToken,{httpOnly: true,maxAge: 60*60*1000});
+                res.cookie('refreshJwt', refreshToken, { httpOnly: true});
                 if(saveToken){
                     res.status(200).json({status : true, accessToken: accessToken, message: response.message});
                 }
@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
                 }    
             }
             else{
-                res.status(200).json({status : true, message: response.message});
+                res.status(200).json({status : false, message: response.message});
             }
         }
         else{
@@ -69,7 +69,6 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     const cookies = req.cookies;
-    console.log(cookies);
     if (!cookies?.refreshJwt){
         res.status(200).json({status : false, message: "No Cookie Found"});
     }
@@ -77,12 +76,12 @@ exports.logout = async (req, res) => {
         const refreshToken = cookies.refreshJwt;
         const findRefresh = await refresh.checkRefresh(refreshToken);
         if (!findRefresh) {
-            res.clearCookie('refreshJwt',{httpOnly: true,maxAge: 60*60*1000});
+            res.clearCookie('refreshJwt', { httpOnly: true});
             res.status(200).json({status : true, message: "Admin Logged Out"});
         }
         else if (findRefresh) {
             const deleteToken = await refresh.deleteRefresh(refreshToken);
-            res.clearCookie('refreshJwt',{httpOnly: true,maxAge: 60*60*1000});
+            res.clearCookie('refreshJwt', { httpOnly: true});
             res.status(200).json({status : true, message: "Admin Logged Out"});
         }
     }

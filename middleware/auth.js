@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-// require('dotenv').config();
+const admin = require("../model/admin");
 
 const authToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -8,9 +8,13 @@ const authToken = (req, res, next) => {
         jwt.verify(
             token,
             "blpaccess2023",
-            (err, decoded) => {
+            async (err, decoded) => {
                 if (err){
-                    res.status(403).json({status: false, error: "Unauthorized Access"});
+                    return res.status(403).json({status: false, error: "Unauthorized Access"});
+                }
+                const check = await admin.checkAdmin(decoded.admin_id);
+                if(!check){
+                    return res.status(403).json({status: false, error: "Unauthorized Access"});
                 }
                 req.admin_id = decoded.admin_id;
                 next();
@@ -18,7 +22,7 @@ const authToken = (req, res, next) => {
         );
     }
     else{
-        res.status(403).json({status: false, error: "Unauthorized Access"});
+        return res.status(403).json({status: false, error: "Unauthorized Access"});
     }
 }
 
