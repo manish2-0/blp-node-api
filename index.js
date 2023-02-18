@@ -8,7 +8,9 @@ const corsOptions = require('./config/corsOptions');
 const cors = require('cors');
 const adminRouter = require("./routes/adminRoutes");
 const clientRouter = require("./routes/clientRoutes");
+const entriesRouter = require("./routes/entriesRoutes");
 const refreshRouter = require("./routes/refreshRoutes");
+const fileUploadRouter = require("./routes/fileUploadRoutes");
 
 app.use(credentials);
 
@@ -31,8 +33,16 @@ app.use(cookieParser());
 // // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true })); 
 app.use("/admin", adminRouter);
-app.use("/client", clientRouter)
-app.use("/refresh", refreshRouter)
+app.use("/client", clientRouter);
+app.use("/entries", entriesRouter);
+app.use("/file", fileUploadRouter);
+app.use("/refresh", refreshRouter);
+
+// const path = require('path');
+
+// app.use("/image", express.static(path.join(__dirname, 'filesUpload')));
+// app.use("/image", express.static("filesUpload"))
+
 
 
 // require('./routes/unauth.js')(app);

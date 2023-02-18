@@ -29,9 +29,13 @@ exports.login = async (req, res) => {
     const {admin_id} = req.body;
     const {password} = req.body;
     let flag = true;
-    if(!admin_id && !password){
+    if(!admin_id){
         flag = false;
-        error = "Please Enter Credentials";
+        error = "Please Enter AdminId";
+    }
+    if(flag && !password){
+        flag = false;
+        error = "Please Enter Password";
     }
     if(flag){
         const response = await admin.login(admin_id, password);
@@ -46,7 +50,7 @@ exports.login = async (req, res) => {
                 const saveToken = await refresh.saveRefresh(admin_id, refreshToken, createdAt, expiryAt);
                 const userAgent = req.headers['user-agent'];
                 const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-                res.cookie('refreshJwt', refreshToken, { httpOnly: true});
+                res.cookie('refreshJwt', refreshToken, { httpOnly: true,maxAge: 24 * 60 * 60 * 1000 }); //secure true
                 if(saveToken){
                     res.status(200).json({status : true, accessToken: accessToken, message: response.message});
                 }
@@ -76,12 +80,12 @@ exports.logout = async (req, res) => {
         const refreshToken = cookies.refreshJwt;
         const findRefresh = await refresh.checkRefresh(refreshToken);
         if (!findRefresh) {
-            res.clearCookie('refreshJwt', { httpOnly: true});
+            res.clearCookie('refreshJwt', { httpOnly: true,maxAge: 24 * 60 * 60 * 1000 }); //secure true
             res.status(200).json({status : true, message: "Admin Logged Out"});
         }
         else if (findRefresh) {
             const deleteToken = await refresh.deleteRefresh(refreshToken);
-            res.clearCookie('refreshJwt', { httpOnly: true});
+            res.clearCookie('refreshJwt', { httpOnly: true,maxAge: 24 * 60 * 60 * 1000 }); //securetrue
             res.status(200).json({status : true, message: "Admin Logged Out"});
         }
     }

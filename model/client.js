@@ -37,3 +37,46 @@ exports.readAll = async () => {
         return response;
     }
 }
+
+exports.readOne = async (blp_id) => {
+    const query = "SELECT * FROM client_details WHERE blp_id = ?";
+    const response = await queryExecuter(query, [blp_id]);
+    if(response.status){
+        if(response.data === undefined){
+            response.message = "No Data Found";
+        }
+        return response;
+    }
+    else{
+        return response;
+    }
+}
+
+exports.updateClient = async (blp_id, clientDetails) => {
+    let now = new Date();
+    const last_modified_at= date.format(now, 'YYYY-MM-DD HH:mm:ss');
+    const query = "UPDATE client_details SET isell = ?, dc_no = ?, date = ?, name = ?, address = ?, city = ?, contact = ?, last_modified_by = ?, last_modified_at = ? WHERE blp_id = ?";
+    const response = await queryExecuter(query, [clientDetails.isell, clientDetails.dc_no, clientDetails.date, clientDetails.name, clientDetails.address, clientDetails.city, clientDetails.contact, clientDetails.last_modified_by, last_modified_at, blp_id]);
+    if(response.status){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+exports.blpIdCheck = async (blp_id) => {
+    const query = "SELECT blp_id FROM client_details WHERE blp_id = ?";
+    const response = await queryExecuter(query, [blp_id]);
+    if(response.status){
+        if(response.data === undefined){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    else{
+        return false;
+    }
+}
