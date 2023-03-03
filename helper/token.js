@@ -5,7 +5,7 @@ const token = {
         const refreshToken = jwt.sign(
             { "admin_id": admin_id },
             "blprefresh2023",
-            { expiresIn: '1d' }
+            { expiresIn: '60m' }
         );
         return refreshToken;
     },
@@ -13,7 +13,7 @@ const token = {
         const accessToken = jwt.sign(
             { "admin_id": admin_id },
             "blpaccess2023",
-            { expiresIn: '30m' }
+            { expiresIn: '15m' }
         );
         return accessToken;
     }

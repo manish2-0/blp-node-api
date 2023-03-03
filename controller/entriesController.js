@@ -13,11 +13,15 @@ exports.register = async (req, res) => {
     entriesDetails.nanosil = req.body.nanosil;
     entriesDetails.superflex = req.body.superflex;
     entriesDetails.silicon = req.body.silicon;
-    entriesDetails.food = req.body.food;
-    entriesDetails.accomodation = req.body.accomodation;
-    entriesDetails.travelling = req.body.travelling;
-    entriesDetails.expenses = req.body.expenses;
     entriesDetails.remarks2 = req.body.remarks2;
+    entriesDetails.food = req.body.food;
+    entriesDetails.food_remarks = req.body.food_remarks;
+    entriesDetails.accomodation = req.body.accomodation;
+    entriesDetails.accomodation_remarks = req.body.accomodation_remarks;
+    entriesDetails.travelling = req.body.travelling;
+    entriesDetails.travelling_remarks = req.body.travelling_remarks;
+    entriesDetails.expenses = req.body.expenses;
+    entriesDetails.expenses_remarks = req.body.expenses_remarks;
     entriesDetails.billstatus = req.body.billstatus;
     entriesDetails.remarks3 = req.body.remarks3;
     let flag = true;
@@ -52,19 +56,31 @@ exports.register = async (req, res) => {
     if (flag && !entriesDetails.silicon) {
         flag = false;
     }
+    if (flag && !entriesDetails.remarks2) {
+        flag = false;
+    }
     if (flag && !entriesDetails.food) {
+        flag = false;
+    }
+    if (flag && !entriesDetails.food_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.accomodation) {
         flag = false;
     }
+    if (flag && !entriesDetails.accomodation_remarks) {
+        flag = false;
+    }
     if (flag && !entriesDetails.travelling) {
+        flag = false;
+    }
+    if (flag && !entriesDetails.travelling_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.expenses) {
         flag = false;
     }
-    if (flag && !entriesDetails.remarks2) {
+    if (flag && !entriesDetails.expenses_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.billstatus) {
@@ -131,11 +147,15 @@ exports.update = async (req, res) => {
     entriesDetails.nanosil = req.body.nanosil;
     entriesDetails.superflex = req.body.superflex;
     entriesDetails.silicon = req.body.silicon;
-    entriesDetails.food = req.body.food;
-    entriesDetails.accomodation = req.body.accomodation;
-    entriesDetails.travelling = req.body.travelling;
-    entriesDetails.expenses = req.body.expenses;
     entriesDetails.remarks2 = req.body.remarks2;
+    entriesDetails.food = req.body.food;
+    entriesDetails.food_remarks = req.body.food_remarks;
+    entriesDetails.accomodation = req.body.accomodation;
+    entriesDetails.accomodation_remarks = req.body.accomodation_remarks;
+    entriesDetails.travelling = req.body.travelling;
+    entriesDetails.travelling_remarks = req.body.travelling_remarks;
+    entriesDetails.expenses = req.body.expenses;
+    entriesDetails.expenses_remarks = req.body.expenses_remarks;
     entriesDetails.billstatus = req.body.billstatus;
     entriesDetails.remarks3 = req.body.remarks3;
     let flag = true;
@@ -170,19 +190,31 @@ exports.update = async (req, res) => {
     if (flag && !entriesDetails.silicon) {
         flag = false;
     }
+    if (flag && !entriesDetails.remarks2) {
+        flag = false;
+    }
     if (flag && !entriesDetails.food) {
+        flag = false;
+    }
+    if (flag && !entriesDetails.food_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.accomodation) {
         flag = false;
     }
+    if (flag && !entriesDetails.accomodation_remarks) {
+        flag = false;
+    }
     if (flag && !entriesDetails.travelling) {
+        flag = false;
+    }
+    if (flag && !entriesDetails.travelling_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.expenses) {
         flag = false;
     }
-    if (flag && !entriesDetails.remarks2) {
+    if (flag && !entriesDetails.expenses_remarks) {
         flag = false;
     }
     if (flag && !entriesDetails.billstatus) {
@@ -196,7 +228,7 @@ exports.update = async (req, res) => {
         if(check){
             const response = await entries.updateEntries(sr_no, entriesDetails);
             if (response) {
-                res.status(200).json({ status: true, message: "entries updated Successfully" })
+                res.status(200).json({ status: true, message: "Entries updated Successfully" })
             }
             else {
                 res.status(200).json({ status: false, message: "Something Went Wrong" });

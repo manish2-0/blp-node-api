@@ -1,7 +1,7 @@
 const queryExecuter = require('../helper/queryExecuter');
 
 exports.register = async (entriesDetails) => {
-    const qry = `INSERT INTO client_entry (blp_id, date, time, nature, status, doneby, remarks1, nanosil, superflex, silicon, food, accomodation, travelling, expenses, remarks2, billstatus, remarks3) VALUES ('${entriesDetails.blp_id}','${entriesDetails.date}','${entriesDetails.time}','${entriesDetails.nature}','${entriesDetails.status}','${entriesDetails.doneby}','${entriesDetails.remarks1}','${entriesDetails.nanosil}','${entriesDetails.superflex}','${entriesDetails.silicon}','${entriesDetails.food}','${entriesDetails.accomodation}','${entriesDetails.travelling}','${entriesDetails.expenses}','${entriesDetails.remarks2}', '${entriesDetails.billstatus}','${entriesDetails.remarks3}')`;
+    const qry = `INSERT INTO client_entry (blp_id, date, time, nature, status, doneby, remarks1, nanosil, superflex, silicon, remarks2, food, food_remarks, accomodation, accomodation_remarks, travelling, travelling_remarks, expenses, expenses_remarks, billstatus, remarks3) VALUES ('${entriesDetails.blp_id}','${entriesDetails.date}','${entriesDetails.time}','${entriesDetails.nature}','${entriesDetails.status}','${entriesDetails.doneby}','${entriesDetails.remarks1}','${entriesDetails.nanosil}','${entriesDetails.superflex}','${entriesDetails.silicon}','${entriesDetails.remarks2}','${entriesDetails.food}','${entriesDetails.food_remarks}','${entriesDetails.accomodation}','${entriesDetails.accomodation_remarks}','${entriesDetails.travelling}','${entriesDetails.travelling_remarks}','${entriesDetails.expenses}','${entriesDetails.expenses_remarks}','${entriesDetails.billstatus}','${entriesDetails.remarks3}')`;
     const resp = await queryExecuter(qry);
     if(resp.status){
         const query = 'SELECT sr_no FROM client_entry ORDER BY sr_no DESC LIMIT 1;';
@@ -52,8 +52,8 @@ exports.readOne = async (blp_id) => {
 }
 
 exports.updateEntries = async (sr_no, entriesDetails) => {
-    const query = "UPDATE client_entry SET date = ?, time = ?, nature = ?, status = ?, doneby = ?, remarks1 = ?, nanosil = ?, superflex = ?, silicon = ?, food = ?, accomodation = ?, travelling = ?, expenses = ?, remarks2 = ?, billstatus = ?, remarks3 = ? WHERE sr_no = ?";
-    const response = await queryExecuter(query, [entriesDetails.date, entriesDetails.time, entriesDetails.nature, entriesDetails.status, entriesDetails.doneby, entriesDetails.remarks1, entriesDetails.nanosil, entriesDetails.superflex, entriesDetails.silicon, entriesDetails.food, entriesDetails.accomodation, entriesDetails.travelling, entriesDetails.expenses, entriesDetails.remarks2, entriesDetails.billstatus, entriesDetails.remarks3, sr_no]);
+    const query = "UPDATE client_entry SET date = ?, time = ?, nature = ?, status = ?, doneby = ?, remarks1 = ?, nanosil = ?, superflex = ?, silicon = ?, remarks2 = ?, food = ?, food_remarks = ?, accomodation = ?, accomodation_remarks = ?, travelling = ?, travelling_remarks = ?, expenses = ?, expenses_remarks = ?, billstatus = ?, remarks3 = ? WHERE sr_no = ?";
+    const response = await queryExecuter(query, [entriesDetails.date, entriesDetails.time, entriesDetails.nature, entriesDetails.status, entriesDetails.doneby, entriesDetails.remarks1, entriesDetails.nanosil, entriesDetails.superflex, entriesDetails.silicon, entriesDetails.remarks2, entriesDetails.food, entriesDetails.food_remarks, entriesDetails.accomodation, entriesDetails.accomodation_remarks, entriesDetails.travelling, entriesDetails.travelling_remarks, entriesDetails.expenses, entriesDetails.expenses_remarks, entriesDetails.billstatus, entriesDetails.remarks3, sr_no]);
     if(response.status){
         return true;
     }

@@ -89,6 +89,8 @@ exports.update = async (req, res) => {
     clientDetails.city = req.body.city;
     clientDetails.contact = req.body.contact;
     clientDetails.last_modified_by = req.admin_id;
+    clientDetails.bill_status = req.body.bill_status;
+    clientDetails.work_status = req.body.work_status;
     let flag = true;
     let error = "Please Enter All Details";
     if (!clientDetails.isell) {
@@ -112,12 +114,18 @@ exports.update = async (req, res) => {
     if (flag && !clientDetails.contact) {
         flag = false;
     }
+    if (flag && !clientDetails.bill_status) {
+        flag = false;
+    }
+    if (flag && !clientDetails.work_status) {
+        flag = false;
+    }
     if (flag) {
         const check = await client.blpIdCheck(blp_id);
         if(check){
             const response = await client.updateClient(blp_id, clientDetails);
             if (response) {
-                res.status(200).json({ status: true, message: "Client Updated Successfully" })
+                res.status(200).json({ status: true, message: "Client Updated Successfully" });
             }
             else {
                 res.status(200).json({ status: false, message: "Something Went Wrong" });
@@ -129,5 +137,39 @@ exports.update = async (req, res) => {
     }
     else {
         res.status(200).json({ status: false, message: error });
+    }
+}
+
+exports.billStatus = async (req, res) => {
+    const { blp_id } = req.params;
+    const check = await client.blpIdCheck(blp_id);
+    if(check){
+        const response = await client.updateBillStatus(blp_id);
+        if (response) {
+            res.status(200).json({ status: true, message: "Client Bill Status Updated Successfully" })
+        }
+        else {
+            res.status(200).json({ status: false, message: "Something Went Wrong" });
+        }
+    }
+    else{
+        res.status(200).json({ status: false, message: "Invalid Blp Id" });
+    }
+}
+
+exports.workStatus = async (req, res) => {
+    const { blp_id } = req.params;
+    const check = await client.blpIdCheck(blp_id);
+    if(check){
+        const response = await client.updateWorkStatus(blp_id);
+        if (response) {
+            res.status(200).json({ status: true, message: "Client Work Status Updated Successfully" })
+        }
+        else {
+            res.status(200).json({ status: false, message: "Something Went Wrong" });
+        }
+    }
+    else{
+        res.status(200).json({ status: false, message: "Invalid Blp Id" });
     }
 }

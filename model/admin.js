@@ -2,7 +2,7 @@ const queryExecuter = require('../helper/queryExecuter');
 const bcrypt = require('bcrypt');
 
 exports.register = async (admin_id, password) => {
-    const qry = "SELECT * FROM admin_details WHERE admin_id = ?";
+    const qry = "SELECT * FROM admin_details WHERE BINARY admin_id = ?";
     const resp = await queryExecuter(qry, [admin_id]);
     if(resp.status){
         if(resp.data === undefined){
@@ -23,7 +23,7 @@ exports.register = async (admin_id, password) => {
 }
 
 exports.login = async (admin_id, password) => {
-    const qry = "SELECT * FROM admin_details WHERE admin_id = ?";
+    const qry = "SELECT * FROM admin_details WHERE BINARY admin_id = ?";
     const resp = await queryExecuter(qry, [admin_id]);
     if(resp.status){
         if(resp.data === undefined){
@@ -50,7 +50,7 @@ exports.login = async (admin_id, password) => {
 }
 
 exports.checkAdmin = async (admin_id) => {
-    const qry = "SELECT * FROM admin_details WHERE admin_id = ?";
+    const qry = "SELECT * FROM admin_details WHERE BINARY admin_id = ?";
     const resp = await queryExecuter(qry, [admin_id]);
     if(resp.status){
         if(resp.data === undefined){

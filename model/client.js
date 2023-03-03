@@ -14,7 +14,7 @@ exports.register = async (clientDetails) => {
     let now = new Date();
     const created_at= date.format(now, 'YYYY-MM-DD HH:mm:ss');
     const blp_id = await generateBLPID();
-    const qry = `INSERT INTO client_details (blp_id, isell, dc_no, date, name, address, city, contact, created_by, created_at) VALUES ('${blp_id}','${clientDetails.isell}','${clientDetails.dc_no}','${clientDetails.date}','${clientDetails.name}','${clientDetails.address}','${clientDetails.city}','${clientDetails.contact}','${clientDetails.created_by}','${created_at}')`;
+    const qry = `INSERT INTO client_details (blp_id, isell, dc_no, date, name, address, city, contact, created_by, created_at, bill_status, work_status) VALUES ('${blp_id}','${clientDetails.isell}','${clientDetails.dc_no}','${clientDetails.date}','${clientDetails.name}','${clientDetails.address}','${clientDetails.city}','${clientDetails.contact}','${clientDetails.created_by}','${created_at}', 'Pending', 'Pending')`;
     const resp = await queryExecuter(qry);
     if(resp.status){
         return true;
@@ -39,7 +39,7 @@ exports.readAll = async () => {
 }
 
 exports.readOne = async (blp_id) => {
-    const query = "SELECT * FROM client_details WHERE blp_id = ?";
+    const query = "SELECT * FROM client_details WHERE BINARY blp_id = ?";
     const response = await queryExecuter(query, [blp_id]);
     if(response.status){
         if(response.data === undefined){
@@ -55,8 +55,8 @@ exports.readOne = async (blp_id) => {
 exports.updateClient = async (blp_id, clientDetails) => {
     let now = new Date();
     const last_modified_at= date.format(now, 'YYYY-MM-DD HH:mm:ss');
-    const query = "UPDATE client_details SET isell = ?, dc_no = ?, date = ?, name = ?, address = ?, city = ?, contact = ?, last_modified_by = ?, last_modified_at = ? WHERE blp_id = ?";
-    const response = await queryExecuter(query, [clientDetails.isell, clientDetails.dc_no, clientDetails.date, clientDetails.name, clientDetails.address, clientDetails.city, clientDetails.contact, clientDetails.last_modified_by, last_modified_at, blp_id]);
+    const query = "UPDATE client_details SET isell = ?, dc_no = ?, date = ?, name = ?, address = ?, city = ?, contact = ?, last_modified_by = ?, last_modified_at = ?, bill_status = ?, work_status = ? WHERE blp_id = ?";
+    const response = await queryExecuter(query, [clientDetails.isell, clientDetails.dc_no, clientDetails.date, clientDetails.name, clientDetails.address, clientDetails.city, clientDetails.contact, clientDetails.last_modified_by, last_modified_at, clientDetails.bill_status, clientDetails.work_status, blp_id]);
     if(response.status){
         return true;
     }
@@ -66,7 +66,7 @@ exports.updateClient = async (blp_id, clientDetails) => {
 }
 
 exports.blpIdCheck = async (blp_id) => {
-    const query = "SELECT blp_id FROM client_details WHERE blp_id = ?";
+    const query = "SELECT blp_id FROM client_details WHERE BINARY blp_id = ?";
     const response = await queryExecuter(query, [blp_id]);
     if(response.status){
         if(response.data === undefined){
@@ -75,6 +75,28 @@ exports.blpIdCheck = async (blp_id) => {
         else{
             return true;
         }
+    }
+    else{
+        return false;
+    }
+}
+
+exports.updateBillStatus = async (blp_id) => {
+    const query = "UPDATE client_details SET bill_status = 'Done' WHERE blp_id = ?"
+    const response = await queryExecuter(query, [blp_id]);
+    if(response.status){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+exports.updateWorkStatus = async (blp_id) => {
+    const query = "UPDATE client_details SET work_status = 'Done' WHERE blp_id = ?"
+    const response = await queryExecuter(query, [blp_id]);
+    if(response.status){
+        return true;
     }
     else{
         return false;
