@@ -4,87 +4,87 @@ const token = require("../helper/token");
 const date = require('date-and-time');
 
 exports.signup = async (req, res) => {
-    const {admin_id} = req.body;
-    const {password} = req.body;
+    const { admin_id } = req.body;
+    const { password } = req.body;
     let flag = true;
-    if(!admin_id || !password){
+    if (!admin_id || !password) {
         flag = false;
         error = "Please Enter Credentials";
     }
-    if(flag){
+    if (flag) {
         const response = await admin.register(admin_id, password);
-        if(response.status){
-            res.status(200).json({status : true, message: response.message});
+        if (response.status) {
+            res.status(200).json({ status: true, message: response.message });
         }
-        else{
-            res.status(200).json({status : false, message: response.error});
+        else {
+            res.status(200).json({ status: false, message: response.error });
         }
     }
-    else if(!flag){
-        res.status(200).json({status : false, message: error});
+    else if (!flag) {
+        res.status(200).json({ status: false, message: error });
     }
 }
 
 exports.login = async (req, res) => {
-    const {admin_id} = req.body;
-    const {password} = req.body;
+    const { admin_id } = req.body;
+    const { password } = req.body;
     let flag = true;
-    if(!admin_id){
+    if (!admin_id) {
         flag = false;
         error = "Please Enter AdminId";
     }
-    if(flag && !password){
+    if (flag && !password) {
         flag = false;
         error = "Please Enter Password";
     }
-    if(flag){
+    if (flag) {
         const response = await admin.login(admin_id, password);
-        if(response.status){
-            if(response.check){
+        if (response.status) {
+            if (response.check) {
                 const refreshTokenExpire = 10;
                 const refreshToken = token.generateRefreshToken(admin_id);
                 const accessToken = token.generateAccessToken(admin_id);
                 let now = new Date();
-                const createdAt= date.format(now, 'YYYY-MM-DD HH:mm:ss');
+                const createdAt = date.format(now, 'YYYY-MM-DD HH:mm:ss');
                 const expiryAt = date.format(date.addMinutes(now, +refreshTokenExpire), 'YYYY-MM-DD HH:mm:ss');
                 const saveToken = await refresh.saveRefresh(admin_id, refreshToken, createdAt, expiryAt);
-                res.cookie('refreshJwt', refreshToken, { httpOnly: true});
-                if(saveToken){
-                    res.status(200).json({status : true, accessToken: accessToken, message: response.message});
+                res.cookie('refreshJwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+                if (saveToken) {
+                    res.status(200).json({ status: true, accessToken: accessToken, message: response.message });
                 }
-                else{
-                    res.status(200).json({status : false, message: "Something Went Wrong"});
-                }    
+                else {
+                    res.status(200).json({ status: false, message: "Something Went Wrong" });
+                }
             }
-            else{
-                res.status(200).json({status : false, message: response.message});
+            else {
+                res.status(200).json({ status: false, message: response.message });
             }
         }
-        else{
-            res.status(200).json({status : false, message: response.error});
+        else {
+            res.status(200).json({ status: false, message: response.error });
         }
     }
-    else if(!flag){
-        res.status(200).json({status : false, message: error});
+    else if (!flag) {
+        res.status(200).json({ status: false, message: error });
     }
 }
 
 exports.logout = async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.refreshJwt){
-        res.status(200).json({status : false, message: "No Cookie Found"});
+    if (!cookies?.refreshJwt) {
+        res.status(200).json({ status: false, message: "No Cookie Found" });
     }
-    else{
+    else {
         const refreshToken = cookies.refreshJwt;
         const findRefresh = await refresh.checkRefresh(refreshToken);
         if (!findRefresh) {
-            res.clearCookie('refreshJwt', { httpOnly: true});
-            res.status(200).json({status : true, message: "Admin Logged Out"});
+            res.clearCookie('refreshJwt', { httpOnly: true,sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+            res.status(200).json({ status: true, message: "Admin Logged Out" });
         }
         else if (findRefresh) {
             const deleteToken = await refresh.deleteRefresh(refreshToken);
-            res.clearCookie('refreshJwt', { httpOnly: true});
-            res.status(200).json({status : true, message: "Admin Logged Out"});
+            res.clearCookie('refreshJwt', { httpOnly: true,sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+            res.status(200).json({ status: true, message: "Admin Logged Out" });
         }
     }
 }

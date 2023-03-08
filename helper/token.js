@@ -5,7 +5,7 @@ const token = {
         const refreshToken = jwt.sign(
             { "admin_id": admin_id },
             "blprefresh2023",
-            { expiresIn: '60m' }
+            { expiresIn: '1d' }
         );
         return refreshToken;
     },
