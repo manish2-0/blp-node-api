@@ -59,8 +59,8 @@ app.use("/refresh", refreshRouter);
  
 // require('./routes/auth.js')(app);
 
-// let PORT = process.env.LISTEN_PORT || 8000;
-let PORT = 8000;
+let PORT = process.env.LISTEN_PORT || 8000;
+// let PORT = 8000;
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
