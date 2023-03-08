@@ -4,7 +4,7 @@ const credentials = require('./middleware/credentials');
 const app = express();
 const corsOptions = require('./config/corsOptions');
 // const TokenMiddleware = require("./middleware/token.js");
-// require('dotenv').config()
+require('dotenv').config();
 const cors = require('cors');
 const adminRouter = require("./routes/adminRoutes");
 const clientRouter = require("./routes/clientRoutes");
@@ -59,7 +59,7 @@ app.use("/refresh", refreshRouter);
  
 // require('./routes/auth.js')(app);
 
-let PORT = process.env.LISTEN_PORT || 8000;
+let PORT = process.env.PORT || 8000;
 // let PORT = 8000;
 
 app.listen(PORT, () => {

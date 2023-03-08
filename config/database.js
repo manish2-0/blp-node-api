@@ -4,11 +4,14 @@ const connection = mysql.createConnection({
   // user: "root",
   // password: "",
   // database: "blp"
-  host: "containers-us-west-52.railway.app",
-  user: "root",
-  password: "rGmsbmeGFFn1WSGTBQOU",
-  database: "railway"
-//   multipleStatements: true
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+  //   multipleStatements: true
 })
 
 connection.connect()
@@ -17,7 +20,7 @@ connection.connect()
 //       console.error('error connecting: ' + err.stack);
 //       return;
 //     }
-   
+
 //     console.log('connected as id ' + connection.threadId);
 //   });
 
