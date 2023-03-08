@@ -17,10 +17,10 @@ exports.register = async (clientDetails) => {
     const qry = `INSERT INTO client_details (blp_id, isell, dc_no, date, name, address, city, contact, created_by, created_at, bill_status, work_status) VALUES ('${blp_id}','${clientDetails.isell}','${clientDetails.dc_no}','${clientDetails.date}','${clientDetails.name}','${clientDetails.address}','${clientDetails.city}','${clientDetails.contact}','${clientDetails.created_by}','${created_at}', 'Pending', 'Pending')`;
     const resp = await queryExecuter(qry);
     if(resp.status){
-        return true;
+        return resp;
     }
     else{
-        return false;
+        return resp;
     }
 }
 
