@@ -3,7 +3,7 @@ const adminRouter = express.Router();
 const admin = require("../controller/adminController");
 const authToken = require("../middleware/auth");
 
-adminRouter.post("/signup",authToken, admin.signup);
+adminRouter.post("/signup", admin.signup);
 
 adminRouter.post("/login", admin.login);
 
