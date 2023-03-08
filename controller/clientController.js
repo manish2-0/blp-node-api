@@ -35,7 +35,7 @@ exports.register = async (req, res) => {
     }
     if (flag) {
         const response = await client.register(clientDetails);
-        if (response) {
+        if (response.status) {
             res.status(200).json({ status: true, message: "Client Registered Successfully" })
         }
         else {
