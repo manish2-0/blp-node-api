@@ -1,9 +1,13 @@
 const mysql = require('mysql')
 const connection = mysql.createConnection({
-  host: "localhost",
+  // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "blp"
+  host: "containers-us-west-52.railway.app",
   user: "root",
-  password: "",
-  database: "blp"
+  password: "rGmsbmeGFFn1WSGTBQOU",
+  database: "railway"
 //   multipleStatements: true
 })
 
