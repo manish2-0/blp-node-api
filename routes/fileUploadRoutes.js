@@ -12,7 +12,7 @@ fileUploadRouter.delete("/delete/:file_no", authToken, deleteFile, fileUpload.de
 
 fileUploadRouter.get("/get-files/:sr_no", authToken, fileUpload.viewFile);
 
-fileUploadRouter.get("/view/:fileName", authToken, (req, res) => {
+fileUploadRouter.get("/view/:fileName", (req, res) => {
     let options = {
         root: path.join(__dirname, '../filesUpload'),
     }
@@ -24,7 +24,7 @@ fileUploadRouter.get("/view/:fileName", authToken, (req, res) => {
     })
 });
 
-fileUploadRouter.get("/download/:fileName", authToken, (req, res) => {
+fileUploadRouter.get("/download/:fileName", (req, res) => {
     const filePath = path.join(__dirname, '../filesUpload', req.params.fileName);
     res.download(filePath, (err) => {
         if (err) {

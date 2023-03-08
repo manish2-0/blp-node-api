@@ -13,7 +13,7 @@ const token = {
         const accessToken = jwt.sign(
             { "admin_id": admin_id },
             "blpaccess2023",
-            { expiresIn: '15m' }
+            { expiresIn: '60m' }
         );
         return accessToken;
     }

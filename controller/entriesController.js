@@ -260,3 +260,33 @@ exports.delete = async (req, res) => {
         res.status(200).json({ status: false, message: "Invalid srno" });
     }
 }
+
+exports.generateReport = async (req, res) => {
+    const fromDate = req.body.from;
+    const toDate = req.body.to;
+    let flag = true;
+    let error = "Please Enter Both Dates";
+    if (!fromDate) {
+        flag = false;
+    }
+    if (flag && !toDate) {
+        flag = false;
+    }
+    if (flag) {
+        const report = await entries.getReport(fromDate, toDate);
+        if (report.status) {
+            if (report.data === undefined) {
+                res.status(200).json({ status: true, message: report.message });
+            }
+            else {
+                res.status(200).json({ status: true, data: report.data });
+            }
+        }
+        else {
+            res.status(200).json({ status: false, message: report.error });
+        }
+    }
+    else {
+        res.status(200).json({ status: false, message: error });
+    }
+}

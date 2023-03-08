@@ -13,4 +13,6 @@ entriesRouter.put("/update-entries/:sr_no", authToken, entries.update);
 
 entriesRouter.delete("/delete-entries/:sr_no", authToken, entries.delete);
 
+entriesRouter.post("/generate-report", authToken, entries.generateReport)
+
 module.exports = entriesRouter;

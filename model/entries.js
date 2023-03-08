@@ -88,3 +88,25 @@ exports.deleteEntries = async (sr_no) => {
         return false;
     }
 }
+
+exports.getReport = async (fromDate, toDate) => {
+    const query = `
+    SELECT 
+    CE.date, CD.blp_id, CD.isell, CD.dc_no, CD.name, CD.city, CE.nature, CE.status, CE.doneby, CE.remarks1, CE.time 
+    FROM 
+    client_details AS CD JOIN client_entry AS CE 
+    ON CD.blp_id = CE.blp_id 
+    WHERE CE.date BETWEEN ? AND ? 
+    ORDER BY CE.date ASC;`;
+    const response = await queryExecuter(query, [fromDate, toDate]);
+    if(response.status){
+        if(response.data === undefined){
+            response.message = "No Data Found";
+        }
+        return response;
+    }
+    else{
+        return response;
+    }
+
+}

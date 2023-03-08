@@ -31,7 +31,7 @@ exports.viewFile = async (req, res) => {
         else {
             const files = allFiles.data;
             for(let file of files){
-                file.flink = `http://localhost:8000/file/image/${file.fname}`;
+                file.flink = `http://localhost:8000/file/view/${file.fname}`;
             }
             res.status(200).json({ status: true, data: files });
         }
