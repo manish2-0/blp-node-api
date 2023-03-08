@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
             res.status(200).json({ status: true, message: "Client Registered Successfully" })
         }
         else {
-            res.status(200).json({ status: false, message: "Something Went Wrong" });
+            res.status(200).json({ status: false, message: response.actualError });
         }
     }
     else {
