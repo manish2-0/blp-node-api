@@ -8,6 +8,7 @@ exports.upload = async (req, res) => {
     if (check) {
         const fileName = blp_id.toUpperCase();
         const billData = JSON.stringify(req.body);
+        console.log(__dirname)
         try {
             await fsPromises.writeFile(path.join(__dirname, '../bills', `${fileName}.json`), billData);
             res.status(200).json({ status: true, message: "Client Bill Updated Successfully" });
